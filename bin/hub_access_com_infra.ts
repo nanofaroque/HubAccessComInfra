@@ -2,6 +2,9 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { HubAccessComInfraStack } from '../lib/hub_access_com_infra-stack';
+import { CodeBuildHubAccessComServiceStack } from '../lib/codebuild';
+import { EcsPipelineStack } from '../lib/ecs';
+import { HubAccessComDatabaseStack } from '../lib/ddb';
 
 const app = new cdk.App();
 new HubAccessComInfraStack(app, 'HubAccessComInfraStack', {
@@ -18,4 +21,8 @@ new HubAccessComInfraStack(app, 'HubAccessComInfraStack', {
   // env: { account: '123456789012', region: 'us-east-1' },
 
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
+
 });
+new CodeBuildHubAccessComServiceStack(app,'CodeBuildHubAccessComServiceStack',{})
+new EcsPipelineStack(app, 'EcsPipelineStack', {})
+new HubAccessComDatabaseStack(app, 'HubAccessComDatabaseStack', {})
