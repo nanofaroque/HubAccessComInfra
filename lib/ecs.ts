@@ -115,6 +115,21 @@ export class EcsPipelineStack extends cdk.Stack {
         ],
         resources: ['arn:aws:logs:*:*:*'],
       }));
+      taskRole.addToPolicy(new iam.PolicyStatement({
+        actions: [
+          "dynamodb:BatchGetItem",
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
+            "dynamodb:Query",
+            "dynamodb:GetItem",
+            "dynamodb:Scan",
+            "dynamodb:BatchWriteItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "dynamodb:DeleteItem"
+        ],
+        resources: ['*']
+      }))
     
     const taskDefinition = new ecs.FargateTaskDefinition(this, 'HubAccessComServiceTaskDefinition', {
       memoryLimitMiB: 512,
@@ -126,7 +141,6 @@ export class EcsPipelineStack extends cdk.Stack {
       taskRole: taskRole,
       executionRole: executionRole,
       
-    
     });
     
     taskDefinition.addContainer('hubaccesscomservice', {

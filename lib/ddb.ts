@@ -4,6 +4,8 @@ import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 const COMMISION_RULE_TABLE_NAME = 'CommissionRules';
 const CONTRACTS_TABLE_NAME = 'Contracts';
 const COMMISION_METHOD_TABLE_NAME = 'CommissionMethods';
+const PCC_GROUP_TABLE_NAME = 'PccGroup';
+
 
 export class HubAccessComDatabaseStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -58,6 +60,23 @@ export class HubAccessComDatabaseStack extends cdk.Stack {
       new cdk.CfnOutput(this, 'CommissionMethodsTableName', {
         value: commissionMethodTableName,
         exportName: 'CommissionMethodsTableName',
+      });
+
+      const pccGroupTable = new dynamodb.Table(this, 'PccGroup', {
+        tableName: PCC_GROUP_TABLE_NAME,
+        partitionKey: { name: 'agentId', type: dynamodb.AttributeType.STRING },
+        sortKey: {name: 'pccGroupId', type: dynamodb.AttributeType.STRING},
+        readCapacity: 5,
+        writeCapacity: 5,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        encryption: dynamodb.TableEncryption.AWS_MANAGED,
+        pointInTimeRecovery:true
+      });
+  
+      const pccGroupTableName = pccGroupTable.tableName
+      new cdk.CfnOutput(this, 'PccGroupTableName', {
+        value: pccGroupTableName,
+        exportName: 'PccGroupTableName',
       });
 
     }
