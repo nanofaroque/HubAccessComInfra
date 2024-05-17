@@ -132,8 +132,8 @@ export class EcsPipelineStack extends cdk.Stack {
       }))
     
     const taskDefinition = new ecs.FargateTaskDefinition(this, 'HubAccessComServiceTaskDefinition', {
-      memoryLimitMiB: 512,
-      cpu: 256,
+      memoryLimitMiB: 1024,
+      cpu: 512,
       runtimePlatform: {
         operatingSystemFamily: ecs.OperatingSystemFamily.LINUX,
         cpuArchitecture: ecs.CpuArchitecture.ARM64,
